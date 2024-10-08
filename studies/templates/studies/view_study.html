@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Study</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Study Details</h1>
+    <p><strong>Study Name:</strong> {{ study.study_name }}</p>
+    <p><strong>Study Phase:</strong> {{ study.study_phase }}</p>
+    <p><strong>Sponsor Name:</strong> {{ study.sponsor_name }}</p>
+    <p><strong>Study Description:</strong> {{ study.study_description }}</p>
+    <a href="{% url 'study_list' %}">Back to List</a>
+</body>
+</html>

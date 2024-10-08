@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Management</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Study Management</h1>
+
+    <form method="POST" id="study-form" action="{% url 'delete_selected_studies' %}"  onsubmit="return confirmDelete();">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th><input type="checkbox" id="select-all"> </th> <!-- Select All Checkbox -->
+                <th>Study Name</th>
+                <th>Study Phase</th>
+                <th>Sponsor Name</th>
+                <th>Study Description</th>
+                <th></th>
+                <th></th> <!-- Added Actions column for Edit button -->
+            </tr>
+            {% for study in studies %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="study_ids" value="{{ study.id }}"> <!-- Individual study selection -->
+                </td>
+                <td>{{ study.study_name }}</td>
+                <td>{{ study.study_phase }}</td>
+                <td>{{ study.sponsor_name }}</td>
+                <td>{{ study.study_description }}</td>
+                <td><a href="{% url 'view_study' study.id %}">View</a></td>
+                <td><a href="{% url 'edit_study' study.id %}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class="button-container">
+            <a href="{% url 'add_study' %}" style="text-decoration:none;"> <!-- Link to Add Study -->
+                <button type="button">Add Study</button> <!-- Button to add a new study -->
+            </a>
+            <button type="submit">Delete Selected</button> <!-- Button to delete selected studies -->
+        </div>
+    </form>
+
+     <!-- Link to add a new study -->
+
+    <script>
+        // JavaScript to handle the "Select All" functionality
+        document.getElementById('select-all').addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('input[name="study_ids"]');
+            for (let checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        });
+        function confirmDelete() {
+            console.log("Delete button clicked"); // Debugging statement to check if function is called
+
+            // Check if any checkboxes are selected
+            let selected = document.querySelectorAll('input[name="study_ids"]:checked').length;
+            if (selected === 0) {
+                alert("Please select at least one study to delete.");
+                return false;
+            }
+
+            // Show confirmation dialog
+            return confirm("Are you sure you want to delete the selected studies?");
+        }
+    </script>
+</body>
+</html>
